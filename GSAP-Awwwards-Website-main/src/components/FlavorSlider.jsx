@@ -3,8 +3,9 @@ import { flavorlists } from "../constants";
 import gsap from "gsap";
 import { useRef } from "react";
 import { useMediaQuery } from "react-responsive";
+import AddToCartButton from "./AddToCartButton";
 
-const FlavorSlider = () => {
+const FlavorSlider = ({ addToCart }) => {
   const sliderRef = useRef();
 
   const isTablet = useMediaQuery({
@@ -90,6 +91,7 @@ const FlavorSlider = () => {
             />
 
             <h1>{flavor.name}</h1>
+            <AddToCartButton flavor={flavor} addToCart={addToCart} />
           </div>
         ))}
         <div className="coming-soon-card relative z-30 lg:w-[50vw] w-96 lg:h-[70vh] md:w-[90vw] md:h-[50vh] h-80 flex-none md:rotate-[-8deg] rotate-0 flex flex-col items-center justify-center gap-4 rounded-2xl overflow-hidden bg-gradient-to-b from-[#e8f5e0] to-[#c8e6c9] border-2 border-[#7cb342] shadow-[0_0_40px_rgba(124,179,66,0.3)]">
