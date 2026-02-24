@@ -1,7 +1,7 @@
 import FlavorTitle from "../components/FlavorTitle";
 import FlavorSlider from "../components/FlavorSlider";
 
-const FlavorSection = () => {
+const FlavorSection = ({ addToCart }) => {
   return (
     <section id="flavor" className="flavor-section">
       <div className="h-full flex lg:flex-row flex-col items-center relative">
@@ -9,7 +9,7 @@ const FlavorSection = () => {
           <FlavorTitle />
         </div>
         <div className="h-full">
-          <FlavorSlider />
+          <FlavorSlider addToCart={addToCart} />
         </div>
       </div>
     </section>
