@@ -10,7 +10,8 @@ import BenefitSection from "./sections/BenefitSection";
 import TestimonialSection from "./sections/TestimonialSection";
 import FooterSection from "./sections/FooterSection";
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import SubscriptionPage from "./components/SubscriptionPage";
 import LoginPage from "./components/LoginPage";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
@@ -59,9 +60,28 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Home cart={cart} addToCart={addToCart} />} />
+      <Route
+        path="/subscribe"
+        element={<SubscriptionWrapper />}
+      />
       <Route path="/login" element={<LoginPage />} />
     </Routes>
   );
 };
+
+function SubscriptionWrapper() {
+  const location = useLocation();
+  const state = location.state || {};
+  const search = new URLSearchParams(location.search);
+  const productId = state.productId || search.get('productId');
+  const basePriceRaw = state.basePrice ?? search.get('basePrice');
+  const basePrice = basePriceRaw ? Number(basePriceRaw) : undefined;
+
+  if (!productId || basePrice === undefined || Number.isNaN(basePrice)) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <SubscriptionPage productId={productId} basePrice={basePrice} />;
+}
 
 export default App;

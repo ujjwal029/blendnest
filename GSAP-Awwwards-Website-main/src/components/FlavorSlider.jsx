@@ -4,30 +4,35 @@ import gsap from "gsap";
 import { useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 import AddToCartButton from "./AddToCartButton";
+import { useNavigate } from "react-router-dom";
 
 const FlavorSlider = ({ addToCart }) => {
   const sliderRef = useRef();
+  const navigate = useNavigate();
 
   const isTablet = useMediaQuery({
     query: "(max-width: 1024px)",
   });
 
   useGSAP(() => {
-    const scrollAmount = sliderRef.current.scrollWidth - window.innerWidth;
+    if (!sliderRef.current) return;
 
-    if (!isTablet) {
+    // Calculate the actual scrollable distance: total content width minus visible width
+    const scrollAmount = sliderRef.current.scrollWidth - sliderRef.current.clientWidth;
+
+    if (!isTablet && scrollAmount > 0) {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: ".flavor-section",
           start: "2% top",
-          end: `+=${scrollAmount + 1500}px`,
+          end: `+=${scrollAmount}px`,
           scrub: true,
           pin: true,
         },
       });
 
       tl.to(".flavor-section", {
-        x: `-${scrollAmount + 1500}px`,
+        x: `-${scrollAmount}px`,
         ease: "power1.inOut",
       });
     }
@@ -90,8 +95,21 @@ const FlavorSlider = ({ addToCart }) => {
               className="elements"
             />
 
-            <h1>{flavor.name}</h1>
-            <AddToCartButton flavor={flavor} addToCart={addToCart} />
+            <h1 title={flavor.name} className="truncate max-w-[60%]">{flavor.name}</h1>
+            <div className="flex gap-3 items-center">
+              <AddToCartButton flavor={flavor} />
+              <button
+                onClick={() => {
+                  const query = `?productId=${encodeURIComponent(flavor.name)}&basePrice=${encodeURIComponent(
+                    String(flavor.price)
+                  )}`;
+                  navigate(`/subscribe${query}`, { state: { productId: flavor.name, basePrice: flavor.price } });
+                }}
+                className="mt-4 px-6 py-2 bg-[#ef4444] text-white rounded-lg hover:bg-[#dc2626] transition-colors"
+              >
+                Buy Now
+              </button>
+            </div>
           </div>
         ))}
         <div className="coming-soon-card relative z-30 lg:w-[50vw] w-96 lg:h-[70vh] md:w-[90vw] md:h-[50vh] h-80 flex-none md:rotate-[-8deg] rotate-0 flex flex-col items-center justify-center gap-4 rounded-2xl overflow-hidden bg-gradient-to-b from-[#e8f5e0] to-[#c8e6c9] border-2 border-[#7cb342] shadow-[0_0_40px_rgba(124,179,66,0.3)]">

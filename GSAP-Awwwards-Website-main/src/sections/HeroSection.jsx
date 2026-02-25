@@ -88,7 +88,7 @@ const HeroSection = () => {
         )}
         <div className="hero-content opacity-0">
           <div className="overflow-hidden">
-            <h1 className="hero-title">Blendnest Naturals</h1>
+            <h1 className="hero-title">Tropical Tango</h1>
           </div>
           <div
             style={{
@@ -97,7 +97,7 @@ const HeroSection = () => {
             className="hero-text-scroll"
           >
             <div className="hero-subtitle">
-              <h1>Tropical Tango</h1>
+              <h1>Fresh & Natural</h1>
             </div>
           </div>
 
