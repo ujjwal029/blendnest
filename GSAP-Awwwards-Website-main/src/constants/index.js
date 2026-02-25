@@ -3,11 +3,13 @@ const flavorlists = [
     name: "Tropical Tango",
     color: "orange",
     rotation: "md:rotate-[-8deg] rotate-0",
+    price: 9.99,
   },
   {
     name: "Mixed Fruit",
     color: "red",
     rotation: "md:rotate-[8deg] rotate-0",
+    price: 11.99,
   },
 ];
 
