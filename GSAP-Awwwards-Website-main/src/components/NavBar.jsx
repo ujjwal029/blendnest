@@ -30,7 +30,7 @@ const NavBar = ({ cartCount }) => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 md:px-9 md:py-6 px-4 py-3 flex justify-between items-center bg-black/20 backdrop-blur-md">
       <a href="#hero" className="flex items-center gap-3 text-dark-brown font-bold md:text-2xl text-xl tracking-tight uppercase">
-        <img src="/images/nav-logo.svg" alt="Blendnest Naturals logo" className="w-9 h-9 object-contain" />
+        <img  alt="Blendnest Naturals logo" className="w-9 h-9 object-contain" />
         <span className="hidden sm:inline-block">Blendnest Naturals</span>
         <span className="inline-block sm:hidden">Blendnest</span>
       </a>
