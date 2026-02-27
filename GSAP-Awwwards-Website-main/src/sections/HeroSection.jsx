@@ -2,6 +2,8 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { SplitText } from "gsap/all";
 import { useMediaQuery } from "react-responsive";
+import { useNavigate } from 'react-router-dom';
+import { flavorlists } from '../constants';
 
 const HeroSection = () => {
   const isMobile = useMediaQuery({
@@ -11,6 +13,9 @@ const HeroSection = () => {
   const isTablet = useMediaQuery({
     query: "(max-width: 1024px)",
   });
+
+  const navigate = useNavigate();
+  const heroProduct = flavorlists && flavorlists.length > 0 ? flavorlists[0] : { name: 'Tropical Tango', price: 9.99 };
 
   useGSAP(() => {
     const titleSplit = SplitText.create(".hero-title", {
@@ -106,7 +111,17 @@ const HeroSection = () => {
           </h2>
 
           <div className="hero-button">
-            <p>Try Blendnest</p>
+            <button
+              type="button"
+              className="hero-cta"
+              onClick={() => {
+                const query = `?productId=${encodeURIComponent(heroProduct.name)}&basePrice=${encodeURIComponent(String(heroProduct.price))}`;
+                navigate(`/subscribe${query}`, { state: { productId: heroProduct.name, basePrice: heroProduct.price } });
+              }}
+              aria-label="Try Blendnest"
+            >
+              Try Blendnest
+            </button>
           </div>
         </div>
       </div>

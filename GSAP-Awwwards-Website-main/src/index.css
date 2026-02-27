@@ -6,6 +6,7 @@
   src: url("/fonts/ProximaNova-Regular.otf");
 }
 
+
 @theme {
   --color-black: #1a2a1f;
   --color-main-bg: #1e2e22;
@@ -87,8 +88,46 @@ body::-webkit-scrollbar {
       }
 
       .hero-button {
-        @apply md:mt-16 mt-10 text-dark-brown bg-light-brown uppercase font-bold text-lg rounded-full md:p-5 p-3 md:px-16 px-10;
+        @apply md:mt-16 mt-10;
       }
+
+      .hero-button .hero-cta {
+        @apply text-dark-brown bg-light-brown uppercase font-bold text-lg rounded-full md:p-5 p-3 md:px-16 px-10 inline-flex items-center gap-3;
+        border: none;
+        cursor: pointer;
+        transition: transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .22s ease, background .22s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-button .hero-cta::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255,255,255,0.14);
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        transition: width .4s ease, height .4s ease, opacity .4s ease;
+        opacity: 0;
+      }
+
+      .hero-button .hero-cta:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 12px 30px rgba(45,74,42,0.12);
+        background: linear-gradient(90deg, #7cb342, #5a9c4a);
+      }
+
+      .hero-button .hero-cta:hover::after {
+        width: 260%;
+        height: 260%;
+        opacity: 1;
+      }
+
+      .hero-button .hero-cta svg { transition: transform .28s ease; }
+      .hero-button .hero-cta:hover svg { transform: translateX(6px); }
     }
   }
 
