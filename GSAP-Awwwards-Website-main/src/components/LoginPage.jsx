@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../lib/supabase';
 import styles from '../LoginPage.module.css';
 
 const LoginPage = () => {
@@ -20,45 +21,41 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    const url = isLogin ? 'http://localhost:3001/api/login' : 'http://localhost:3001/api/signup';
-    const body = isLogin
-      ? { email: formData.email, password: formData.password }
-      : { 
-          name: formData.name, 
-          age: parseInt(formData.age), 
-          email: formData.email, 
-          password: formData.password 
-        };
+
+    const { email, password, name, age } = formData;
 
     try {
-      console.log('Sending request to:', url);
-      console.log('Body:', body);
-      
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
+      if (isLogin) {
+        // LOGIN
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
-      if (res.ok) {
-        if (isLogin) {
-          const { token } = await res.json();
-          localStorage.setItem('token', token);
-          console.log('Login successful, stored token');
-          navigate('/');
-        } else {
-          alert(' Signup successful! Please login to start BlendNest.');
-          setIsLogin(true);
-          setFormData({ name: '', age: '', email: '', password: '' });
-        }
+        if (error) throw error;
+        
+        navigate('/');
       } else {
-        const error = await res.json();
-        alert(error.error || 'Something went wrong 🍋');
+        // SIGNUP
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              name,
+              age: parseInt(age) || 0,
+            }
+          }
+        });
+
+        if (error) throw error;
+        
+        alert('Check your email for confirmation!');
+        setIsLogin(true);
+        setFormData({ name: '', age: '', email: '', password: '' });
       }
     } catch (error) {
-      console.error('Fetch error:', error);
-      alert('Failed to connect to server ');
+      alert(error.message || 'Something went wrong ');
     } finally {
       setIsLoading(false);
     }
@@ -95,7 +92,7 @@ const LoginPage = () => {
                   <input
                     type="text"
                     name="name"
-                    placeholder="John "
+                    placeholder="John Doe"
                     value={formData.name}
                     onChange={handleChange}
                     className={styles.input}
@@ -108,15 +105,15 @@ const LoginPage = () => {
               <div className={styles.field}>
                 <label className={styles.label}>Age</label>
                 <div className={styles.inputWrapper}>
-                  <span className={styles.inputIcon}></span>
+                  <span className={styles.inputIcon}>🎂</span>
                   <input
                     type="number"
                     name="age"
-                    
                     value={formData.age}
                     onChange={handleChange}
                     className={styles.input}
                     min="18"
+                    max="100"
                     required
                     disabled={isLoading}
                   />
@@ -170,7 +167,7 @@ const LoginPage = () => {
                 Squeezing...
               </>
             ) : (
-              isLogin ? 'Login' : ' Create Account'
+              isLogin ? 'Login' : 'Create Account'
             )}
           </button>
         </form>
@@ -193,7 +190,7 @@ const LoginPage = () => {
         {/* Trust badges */}
         <div className={styles.trustBadges}>
           <div className={styles.badges}>
-            <span> Secure</span>
+            <span>Secure</span>
             <span>•</span>
             <span>⚡ Instant</span>
           </div>
@@ -204,4 +201,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
