@@ -10,10 +10,11 @@ const PLANS = [
 
 export default function SubscriptionPage({ productId, basePrice, onSelect }) {
   const [hoveredPlan, setHoveredPlan] = useState(null)
-  const currency = new Intl.NumberFormat('en-US', { 
-    style: 'currency', 
-    currency: 'USD', 
-    maximumFractionDigits: 2 
+  // format prices in Indian Rupees
+  const currency = new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits: 2
   })
   const safeBasePrice = Number(basePrice) || 0
 
@@ -130,7 +131,7 @@ export default function SubscriptionPage({ productId, basePrice, onSelect }) {
 
       <footer className={styles.footer}>
         <div className={styles.footerContent}>
-          <small>Prices in USD • Taxes & shipping at checkout • Cancel anytime</small>
+          <small>Prices in INR • Taxes & shipping at checkout • Cancel anytime</small>
           <div className={styles.securityBadges}>
             🔒 Secure • ⚡ Instant • 📱 Mobile
           </div>
